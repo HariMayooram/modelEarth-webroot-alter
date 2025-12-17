@@ -1,0 +1,12 @@
+[submodule "localsite"]
+	path = localsite
+	url = https://github.com/HariMayooram/localsite.git
+	branch = main
+[submodule "auth-system"]
+	path = auth-system
+	url = https://github.com/HariMayooram/auth-system.git
+	branch = main
+[submodule "team-model-earth"]
+	path = team-model-earth
+	url = https://github.com/HariMayooram/team-model-earth.git
+	branch = main
