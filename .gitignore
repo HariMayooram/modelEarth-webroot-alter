@@ -8,6 +8,7 @@ data-pipeline
 display
 explore
 membersense
+modelearth.github.io
 nisar
 panels
 products-big-files-to-delete
@@ -35,9 +36,21 @@ settings.local.json
 *.pem
 env/*
 .env
-.env.local
-.env.production
+.env.*
+!.env.example
 *.env
+.secrets
+.actrc
+
+# Google Cloud Service Account Keys (JSON format)
+*-sa-key.json
+*-service-account*.json
+service-account*.json
+gcp-*.json
+google-credentials*.json
+*-key.json
+credentials.json
+!.env.example
 
 # Logs
 *.log
