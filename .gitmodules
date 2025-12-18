@@ -7,6 +7,6 @@
 	url = https://github.com/HariMayooram/auth-system.git
 	branch = main
 [submodule "team"]
-	path = team
-	url = https://github.com/HariMayooram/team.git
+	path = team-model-earth
+	url = https://github.com/HariMayooram/team-model-earth.git
 	branch = main
