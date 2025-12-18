@@ -49,6 +49,7 @@ service-account*.json
 gcp-*.json
 google-credentials*.json
 *-key.json
+key.json
 credentials.json
 !.env.example
 
