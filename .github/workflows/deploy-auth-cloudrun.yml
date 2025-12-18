@@ -72,14 +72,14 @@ jobs:
             exit 1
           fi
 
-          # Redeploy with the correct BASE_URL and Secrets
+          # Redeploy with the HARDCODED correct URL
           gcloud run deploy ${{ env.SERVICE_NAME }} \
             --image=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/webroot/auth-system:${{ github.sha }} \
             --platform=managed \
             --region=${{ env.REGION }} \
             --allow-unauthenticated \
             --port=8080 \
-            --set-env-vars="^++^NODE_ENV=production++BASE_URL=${SERVICE_URL}" \
+            --set-env-vars="^++^NODE_ENV=production++BASE_URL=https://webroot-auth-api-336235334145.us-central1.run.app" \
             --set-secrets="ALLOWED_ORIGINS=ALLOWED_ORIGINS_SECRET:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,GITHUB_CLIENT_ID=GITHUB_CLIENT_ID:latest,GITHUB_CLIENT_SECRET=GITHUB_CLIENT_SECRET:latest,LINKEDIN_CLIENT_ID=LINKEDIN_CLIENT_ID:latest,LINKEDIN_CLIENT_SECRET=LINKEDIN_CLIENT_SECRET:latest,MICROSOFT_CLIENT_ID=MICROSOFT_CLIENT_ID:latest,MICROSOFT_CLIENT_SECRET=MICROSOFT_CLIENT_SECRET:latest,DISCORD_CLIENT_ID=DISCORD_CLIENT_ID:latest,DISCORD_CLIENT_SECRET=DISCORD_CLIENT_SECRET:latest,FACEBOOK_CLIENT_ID=FACEBOOK_CLIENT_ID:latest,FACEBOOK_CLIENT_SECRET=FACEBOOK_CLIENT_SECRET:latest,BETTER_AUTH_SECRET=BETTER_AUTH_SECRET:latest,DATABASE_URL=AUTH_DATABASE_URL:latest" \
             --min-instances=0 \
             --max-instances=3 \
