@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive  # Crucial to fetch all submodules
+          fetch-depth: 0
+
+      - name: Prepare _site directory with all project files
+        run: |
+          mkdir _site
+
+          # Copy top-level files from main repo (e.g., index.html, favicon.ico)
+          # Adjust this line to include all relevant top-level files
+          cp index.html _site/
+          find . -maxdepth 1 -type f -name "*.ico" -exec cp {} _site/ \; # Copy favicons
+          find . -maxdepth 1 -type f -name "*.md" -exec cp {} _site/ \;  # Copy READMEs if desired
+
+          # Iterate through all top-level directories (which are submodules/repos)
+          # and copy their *contents* into _site, maintaining their names.
+          # Use `/.` to copy contents, excluding their own .git directories.
+          # Exclude common non-web directories like .git, .github, _site, env, node_modules
+          for dir in $(find . -maxdepth 1 -mindepth 1 -type d ! -name ".git" ! -name ".github" ! -name "_site" ! -name "env" ! -name "node_modules" | sed 's/.\///'); do
+            if [ -d "$dir" ]; then # Ensure it's a directory
+              echo "Copying contents of $dir to _site/$dir"
+              mkdir -p "_site/$dir"
+              cp -r "$dir/." "_site/$dir/"
+            fi
+          done
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site' # Upload the prepared _site directory
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
